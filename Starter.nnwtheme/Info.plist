@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ThemeIdentifier</key>
+	<string>com.example.starter</string>
+	<key>Name</key>
+	<string>Starter</string>
+	<key>CreatorHomePage</key>
+	<string>https://example.com</string>
+	<key>CreatorName</key>
+	<string>Theme Author</string>
+	<key>Version</key>
+	<integer>1</integer>
+</dict>
+</plist>
