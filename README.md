@@ -12,9 +12,9 @@ The design is taken from [OrthodoxPrayers.net](https://orthodoxprayers.net/), a 
 
 On iOS and macOS, open this link on the device:
 
-`netnewswire://theme/add?url=https://github.com/mdws-org/nnw-prayer-book/releases/latest/download/Prayer%20Book.nnwtheme.zip`
+`netnewswire://theme/add?url=https://github.com/mdws-org/nnw-prayer-book/releases/latest/download/Prayer.Book.nnwtheme.zip`
 
-Or download `Prayer Book.nnwtheme.zip` from the [latest release](https://github.com/mdws-org/nnw-prayer-book/releases/latest), unzip it, and on the Mac double-click the `.nnwtheme` folder. On iOS, put the unzipped folder in iCloud Drive and choose it under Settings → Article Theme → Add Theme.
+Or download `Prayer.Book.nnwtheme.zip` from the [latest release](https://github.com/mdws-org/nnw-prayer-book/releases/latest), unzip it, and on the Mac double-click the `.nnwtheme` folder. On iOS, put the unzipped folder in iCloud Drive and choose it under Settings → Article Theme → Add Theme.
 
 Day and Night follow the system appearance.
 
