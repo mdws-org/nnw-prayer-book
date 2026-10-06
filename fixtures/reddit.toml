@@ -1,0 +1,13 @@
+title = 'Achieving memory safety'
+preferred_link = 'https://www.reddit.com/r/programming/comments/1wydryt/achieving_memory_safety/'
+external_link_label = ""
+external_link = ""
+external_link_stripped = ""
+feed_link_title = 'r/programming'
+feed_link = 'https://www.reddit.com/r/programming/.rss'
+byline = '/u/ThomasMertes'
+avatar_src = ""
+dateline_style = "articleDatelineTitle"
+datetime_medium = '2026-10-05T16:55:31+00:00'
+date_medium = '2026-10-05T16:55'
+body = '''<!-- SC_OFF --><div class="md"><p>This is about memory safety in general and how the memory safety of <a href="https://seed7.net">Seed7</a> has been improved in the <a href="https://www.reddit.com/r/seed7/comments/1uvbc5a/seed7_version_20260711_released_on_github_and_sf/">release 2026-07-11</a>.</p> <p>Seed7 is a programming language which cares about <a href="https://seed7.net/faq.htm#maintainability">maintainability</a>, <a href="https://seed7.net/faq.htm#portable">portability</a>, <a href="https://seed7.net/scrshots/s7c.htm">performance</a> and <a href="https://seed7.net/faq.htm#memory_safety">memory safety</a>. The <a href="https://seed7.net">Seed7 homepage</a> contains the language documentation. The source code is at <a href="https://github.com/ThomasMertes/seed7">GitHub</a>. Questions that are not in the <a href="https://thomasmertes.github.io/Seed7Home/faq.htm">FAQ</a> can be asked at <a href="https://www.reddit.com/r/seed7/">r/seed7</a>.</p> <p>There is also a talk about <a href="https://www.youtube.com/watch?v=TJn7AfYajNk">Memory Safety and Management</a> which introduces Seed7 and explains memory safety and management.</p> <p>Please let me know what you think, and consider starring the project on <a href="https://github.com/ThomasMertes/seed7">GitHub</a>, thanks!</p> </div><!-- SC_ON --> &#32; submitted by &#32; <a href="https://www.reddit.com/user/ThomasMertes"> /u/ThomasMertes </a> <br/> <span><a href="https://seed7.net/papers/memory_safety.htm">[link]</a></span> &#32; <span><a href="https://www.reddit.com/r/programming/comments/1wydryt/achieving_memory_safety/">[comments]</a></span>'''

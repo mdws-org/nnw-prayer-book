@@ -1,0 +1,538 @@
+/* Prayer Book: a NetNewsWire theme set after orthodoxprayers.net.
+   Colors, type, and link register come from the site's prayers.css:
+   EB Garamond, the Day (parchment) and Night (vigil) palettes, red as the
+   mark for links and rubrics, justified and hyphenated text.
+
+   A theme stylesheet replaces NetNewsWire's default outright, so the
+   structural rules the default carries (tables, code, media, footnote
+   popovers, platform text sizes) are kept here in the site's colors.
+
+   The fonts are embedded as data URIs by build.sh: NetNewsWire renders an
+   article against the article's own URL, so a relative font path would
+   resolve on the publisher's server, not in the theme. */
+
+/*@FONTS@*/
+
+:root {
+	color-scheme: light dark;
+	--serif: 'EB Garamond', 'Iowan Old Style', Palatino, Georgia, serif;
+	--mono: "SF Mono", Menlo, Courier, monospace;
+	/* Day — parchment */
+	--bg: #f5edda;
+	--ink: #3b3226;
+	--ink-soft: #6f6352;
+	--rubric: #8f1f1f;
+	--accent: #a67c1e;
+	--rule: #dccfae;
+	--wash: #ece2c9;
+}
+@media (prefers-color-scheme: dark) {
+	:root {
+		/* Night — vigil */
+		--bg: #0f0e0c;
+		--ink: #e6e1d5;
+		--ink-soft: #96907f;
+		--rubric: #cf5b58;
+		--accent: #c9a227;
+		--rule: #2e2b25;
+		--wash: #1c1a16;
+	}
+}
+
+html {
+	background: var(--bg);
+}
+
+body {
+	background: var(--bg);
+	color: var(--ink);
+	font-family: var(--serif);
+	line-height: 1.65;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 34em;
+	word-wrap: break-word;
+	font-kerning: normal;
+	font-variant-ligatures: common-ligatures;
+}
+
+/* Running head: feed name at the left margin, date at the right, tied by a
+   hairline rule, as the printed books set their title-and-folio line. */
+.runningHead {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 1em;
+	border-bottom: 1px solid var(--rule);
+	padding-bottom: 0.55rem;
+	margin-bottom: 2.4rem;
+	font-variant: small-caps;
+	letter-spacing: 0.12em;
+	font-size: 1rem;
+}
+.runningHead a,
+.runningHead a:visited {
+	color: var(--ink-soft);
+	text-decoration: none;
+}
+.runningHead a:hover {
+	color: var(--rubric);
+}
+.runningHead .feedlink {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.runningHead .folio {
+	flex: none;
+	text-align: end;
+}
+#nnwImageIcon {
+	display: none;
+}
+
+.articleTitle h1 {
+	text-align: center;
+	font-weight: 500;
+	font-size: 2rem;
+	line-height: 1.2;
+	letter-spacing: 0.01em;
+	margin: 0 0 0.55rem;
+	text-wrap: balance;
+}
+.articleTitle a,
+.articleTitle a:visited {
+	color: var(--ink);
+	text-decoration: none;
+}
+.articleTitle a:hover {
+	color: var(--rubric);
+}
+.articleTitle:has(a:empty) {
+	display: none;
+}
+
+/* The byline is set where the site sets a prayer's attribution: centered,
+   italic, in red. */
+.attribution {
+	text-align: center;
+	color: var(--rubric);
+	font-style: italic;
+	font-size: 1rem;
+	margin-bottom: 1.4rem;
+}
+.attribution:empty {
+	display: none;
+}
+.attribution a,
+.attribution a:visited {
+	color: inherit;
+	text-decoration: none;
+}
+
+hr.rule {
+	border: none;
+	border-top: 1px solid var(--rule);
+	width: 38%;
+	margin: 0 auto 2rem;
+}
+
+.externalLink {
+	text-align: center;
+	margin: -1rem 0 1.8rem;
+	font-size: 0.9rem;
+	font-style: italic;
+	color: var(--ink-soft);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.externalLink:has(a[href=""]) {
+	display: none;
+}
+.externalLink a,
+.externalLink a:visited {
+	color: var(--rubric);
+	text-decoration: none;
+}
+
+/* ---- The text ---- */
+
+.articleBody {
+	position: relative;
+	line-height: 1.65;
+}
+
+.articleBody p,
+.articleBody li,
+.articleBody dd {
+	-webkit-hyphens: auto;
+	hyphens: auto;
+	/* Words of six letters or more, three on each side of the break, and no
+	   more than two hyphenated lines in a row. */
+	-webkit-hyphenate-limit-chars: 6 3 3;
+	-webkit-hyphenate-limit-lines: 2;
+	hanging-punctuation: first;
+}
+/* Paragraphs are justified as the prayers are; hyphenation (lang="en" in
+   the template) is what lets the setting survive a phone's ~36-character
+   line. List items are short lines and stay ragged, as the site sets its
+   petitions: justified, a line just short of the measure stretches its
+   word spaces across it. */
+.articleBody p {
+	text-align: justify;
+	margin: 0 0 1.15em;
+}
+.articleBody li p {
+	text-align: left;
+}
+mark {
+	background: color-mix(in srgb, var(--accent) 28%, transparent);
+	color: inherit;
+}
+
+/* The opening capital drops in red, as each prayer opens on the site. It
+   goes on the first paragraph of the article in document order, however
+   deep the feed wraps it: a paragraph is passed over if a text paragraph,
+   or an element holding one, comes before it at its own level or at any
+   level above. Quotations, lists, captions, tables and paragraphs that
+   open on an image are not text paragraphs, and an article that opens on
+   two "label: link" lines, a link the only element in each (Hacker News,
+   Lobsters, every aggregator feed), takes no capital at all. The predecessor test cannot use :has() (WebKit
+   rejects :has() inside :has()), so an image-only paragraph inside an
+   earlier wrapper still counts as text there. A post with no title (a
+   Mastodon or Bluesky post) is not an article and takes no capital. */
+article:not(:has(.articleTitle a:empty)) .articleBody p:not(:is(blockquote, li, figcaption, figure, table) p):not(:has(> :is(img, picture, video, iframe, svg):first-child)):not(:has(> a:first-child > img)):not(:has(> a:only-child):has(+ p > a:only-child)):not(.articleBody p:not(:is(blockquote, li, figcaption, figure, table) p):not(:has(> :is(img, picture, video, iframe, svg):first-child)):not(:has(> a:first-child > img)) ~ p):not(.articleBody :has(p:not(:is(blockquote, li, figcaption, figure, table) p)) ~ p):not(.articleBody p:not(:is(blockquote, li, figcaption, figure, table) p):not(:has(> :is(img, picture, video, iframe, svg):first-child)):not(:has(> a:first-child > img)) ~ * p):not(.articleBody :has(p:not(:is(blockquote, li, figcaption, figure, table) p)) ~ * p)::first-letter {
+	color: var(--rubric);
+	font-size: 3.4em;
+	float: left;
+	line-height: 0.82;
+	padding: 0.06em 0.12em 0 0;
+	font-weight: 500;
+}
+
+/* Links are rubrics: red, the printed books' mark for "not the text --
+   attend differently". No underline at rest; a heavier underline on hover
+   rather than dimming, which would drop the night red below 4.5:1. */
+a,
+a:visited {
+	color: var(--rubric);
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+	text-decoration-thickness: 2px;
+	text-underline-offset: 0.18em;
+}
+a :is(i, em) {
+	color: inherit;
+}
+.articleBody a:has(img):hover {
+	text-decoration: none;
+}
+
+/* Headings follow the site's psalm head: red small caps, centered. */
+.articleBody h1,
+.articleBody h2 {
+	text-align: center;
+	color: var(--rubric);
+	font-variant: small-caps;
+	font-weight: 500;
+	font-size: 1.2em;
+	letter-spacing: 0.1em;
+	line-height: 1.3;
+	margin: 2em 0 0.6em;
+	text-wrap: balance;
+}
+.articleBody h3 {
+	text-align: center;
+	color: var(--rubric);
+	font-variant: small-caps;
+	font-weight: 400;
+	font-size: 1.05em;
+	letter-spacing: 0.12em;
+	margin: 1.6em 0 0.6em;
+	text-wrap: balance;
+}
+.articleBody h4,
+.articleBody h5,
+.articleBody h6 {
+	color: var(--rubric);
+	font-style: italic;
+	font-weight: 400;
+	font-size: 1em;
+	margin: 1.4em 0 0.6em;
+}
+
+.articleBody strong,
+.articleBody b {
+	font-weight: 600;
+}
+
+.articleBody ul,
+.articleBody ol {
+	padding-inline-start: 1.5em;
+	margin: 0 0 1.15em;
+}
+.articleBody li {
+	margin-bottom: 0.35em;
+}
+.articleBody li::marker {
+	color: var(--rubric);
+}
+
+/* A quotation is set as the site sets verse: indented, in ink, with a
+   hairline at the margin. */
+blockquote {
+	margin: 0 0 1.15em;
+	margin-inline-start: 0;
+	margin-inline-end: 0;
+	padding-inline-start: 1.25em;
+	border-inline-start: 1px solid var(--rubric);
+	font-style: italic;
+}
+blockquote :is(i, em) {
+	font-style: normal;
+}
+
+hr {
+	border: none;
+	border-top: 1px solid var(--rule);
+	width: 38%;
+	margin: 2.2em auto;
+}
+
+/* ---- Media ---- */
+
+img, figure, video, div, object {
+	max-width: 100%;
+	height: auto !important;
+	margin: 0 auto;
+}
+iframe {
+	max-width: 100%;
+	margin: 0 auto;
+}
+iframe.nnw-constrained {
+	max-height: 50vw;
+}
+/* Media standing on its own keeps a paragraph's space below it, so the
+   text (and its opening capital) does not sit on the frame. */
+.articleBody > :is(img, video, iframe, picture),
+.articleBody > :is(p, div, a):has(> :is(img, video, iframe, picture):only-child) {
+	display: block;
+	margin-bottom: 1.4em;
+}
+figure {
+	margin-top: 1.4em;
+	margin-bottom: 1.4em;
+}
+/* A caption: figcaption, or the paragraph some feeds put inside the figure
+   instead (The Verge leaves figcaption empty and sets the credit in a p). */
+figcaption,
+figure > :is(p, div, span, small):not(:has(img, picture, video, iframe)) {
+	margin: 0.5em 0 0;
+	text-align: center;
+	color: var(--ink-soft);
+	font-style: italic;
+	font-size: 0.9em;
+	line-height: 1.4;
+}
+.iframeWrap {
+	position: relative;
+	display: block;
+	padding-top: 56.25%;
+}
+.iframeWrap iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100% !important;
+	width: 100% !important;
+}
+
+sup {
+	vertical-align: top;
+	position: relative;
+	bottom: 0.2rem;
+}
+sub {
+	vertical-align: bottom;
+	position: relative;
+	top: 0.2rem;
+}
+
+/* ---- Code ---- */
+
+code, pre {
+	font-family: var(--mono);
+	font-size: 0.85em;
+	-webkit-hyphens: none;
+	hyphens: none;
+	background: var(--wash);
+	color: var(--ink);
+}
+code {
+	padding: 1px 3px;
+	border-radius: 2px;
+}
+pre {
+	max-width: 100%;
+	margin: 0 0 1.15em;
+	padding: 0.8em 1em;
+	overflow: auto;
+	overflow-y: hidden;
+	word-wrap: normal;
+	word-break: normal;
+	line-height: 1.45;
+	border-radius: 2px;
+	text-align: left;
+}
+pre code {
+	padding: 0;
+	font-size: 1em;
+	background: none;
+}
+
+/* ---- Tables ---- */
+
+.nnw-overflow {
+	overflow-x: auto;
+}
+.nnw-overflow table {
+	margin-bottom: 1px;
+	border-spacing: 0;
+	font-size: 0.95em;
+	border-collapse: collapse;
+}
+.nnw-overflow table table {
+	margin-bottom: 0;
+	border: none;
+}
+.nnw-overflow td,
+.nnw-overflow th {
+	-webkit-hyphens: none;
+	hyphens: none;
+	word-break: normal;
+	border: none;
+	border-bottom: 1px solid var(--rule);
+	padding: 6px 11px;
+	text-align: left;
+}
+.nnw-overflow th {
+	color: var(--rubric);
+	font-variant: small-caps;
+	font-weight: 400;
+	letter-spacing: 0.06em;
+}
+.nnw-overflow :is(thead, tbody, tfoot):last-child > tr:last-child :is(td, th) {
+	border-bottom: none;
+}
+.nnw-overflow td pre {
+	border: none;
+	padding: 0;
+}
+.nnw-overflow table[border="0"] {
+	border-width: 0;
+}
+
+/* ---- Footnote popovers (newsfoot.js) ---- */
+
+.newsfoot-footnote-popover {
+	background: var(--rule);
+	color: var(--ink);
+	box-shadow: 0 2px 6px rgb(0 0 0 / 0.25);
+	padding: 1px;
+}
+.newsfoot-footnote-popover-arrow {
+	background: var(--bg);
+	border: 1px solid var(--rule);
+}
+.newsfoot-footnote-popover-inner {
+	background: var(--bg);
+}
+body a.footnote,
+body a.footnote:visited,
+.newsfoot-footnote-popover + a.footnote:hover {
+	background: none;
+	color: var(--rubric);
+	text-decoration: none;
+}
+a.footnote:hover,
+.newsfoot-footnote-popover + a.footnote {
+	text-decoration: underline;
+}
+
+.feedbin--article-wrap {
+	border-top: 1px solid var(--rule);
+}
+
+/* ---- NetNewsWire's own messages ("No selection") ---- */
+
+.systemMessage {
+	position: absolute;
+	top: 45%;
+	left: 50%;
+	transform: translateX(-55%) translateY(-50%);
+	-webkit-user-select: none;
+	cursor: default;
+	color: var(--ink-soft);
+	font-style: italic;
+}
+
+/* ---- iOS ----
+   NetNewsWire writes the reader's Dynamic Type size into [[font-size]].
+   Garamond sets small on its body, so the text runs one step larger than
+   the system size, as the site's phone setting does. */
+@supports (-webkit-touch-callout: none) {
+	:root {
+		font-size: [[font-size]]px;
+		-webkit-text-size-adjust: none;
+	}
+	body {
+		margin-top: 3px;
+		margin-bottom: 20px;
+		padding-left: 20px;
+		padding-right: 20px;
+		word-break: break-word;
+	}
+	.articleBody {
+		font-size: 1.08rem;
+	}
+	.articleTitle h1 {
+		font-size: 1.6rem;
+	}
+	.runningHead {
+		margin-bottom: 1.9rem;
+	}
+}
+
+/* ---- macOS ----
+   The site sets its text at 1.16rem on a 16px root; Medium matches that,
+   and the other sizes step around it. */
+@supports not (-webkit-touch-callout: none) {
+	body {
+		margin-top: 24px;
+		margin-bottom: 64px;
+		padding-left: 48px;
+		padding-right: 48px;
+	}
+	.smallText {
+		font-size: 16px;
+	}
+	.mediumText {
+		font-size: 18.5px;
+	}
+	.largeText {
+		font-size: 20.5px;
+	}
+	.xlargeText {
+		font-size: 22.5px;
+	}
+	.xxlargeText {
+		font-size: 25px;
+	}
+	a u {
+		text-decoration: none;
+	}
+}

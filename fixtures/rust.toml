@@ -1,0 +1,29 @@
+title = 'Demoting i686 Windows targets to std-only'
+preferred_link = 'https://blog.rust-lang.org/2026/10/02/demoting-i686-windows-targets-to-std-only/'
+external_link_label = ""
+external_link = ""
+external_link_stripped = ""
+feed_link_title = 'Rust Blog'
+feed_link = 'https://blog.rust-lang.org/feed.xml'
+byline = 'Mateusz Mikuła, Ralf Jung'
+avatar_src = ""
+dateline_style = "articleDatelineTitle"
+datetime_medium = '2026-10-02T00:00:00+00:00'
+date_medium = '2026-10-02T00:00'
+body = '''<p>With Rust 1.100.0, the following changes to 32-bit Windows targets will happen:</p>
+<ul>
+<li><code>i686-pc-windows-msvc</code> Tier 1 <em>with</em> host tools target will be demoted to Tier 1 <em>without</em> host tools.</li>
+<li><code>i686-pc-windows-gnu</code> Tier 2 <em>with</em> host tools target will be demoted to Tier 2 <em>without</em> host tools.</li>
+</ul>
+<p>Builds of the standard library will continue to be distributed, but host tools such as the compiler will be no longer available. <code>i686-pc-windows-msvc</code> as a Tier 1 target still undergoes CI testing.</p>
+<p>To build 32-bit Windows binaries, cross-compiling from a still-supported host toolchain (such as a 64-bit Windows ones) will be required from now on.</p>
+<h2 id="background"><a class="anchor" href="#background" aria-hidden="true"></a>
+Background</h2>
+<p>Desktop and Server 32-bit only x86 CPUs are no longer sold for over 15 years, and general 32-bit Windows support has ended in October 2025. This means that the development platforms these targets are meant for hardly exist these days, and even if they do exist they typically aren't capable enough for development.</p>
+<p>Even on the modern x86_64 hardware, building i686 Windows toolchains has proven to be problematic. We have encountered compiler binaries crashing when built with the i686 MSVC target, and the GNU C++ toolchain failing with OOMs during LLVM build.</p>
+<p>Considering all these things, cross-compiling these targets from a better supported one is what we have found to be the best solution forward. As part of that, we stopped producing host tools for these targets. For the time being, the prebuilt standard library is still available, and in case of <code>i686-pc-windows-msvc</code> still tested on CI.</p>
+<h2 id="what-changes"><a class="anchor" href="#what-changes" aria-hidden="true"></a>
+What Changes?</h2>
+<p>After Rust 1.100, it will no longer be possible to install toolchains on 32-bit Windows hosts. We recommend cross-compiling from a still-supported host (such as a 64-bit Windows toolchain) instead. Other 32-bit platforms are not impacted by this change.</p>
+<p>For more details about these demotions, see <a rel="external" href="https://github.com/rust-lang/rfcs/blob/51783df9a76c355de7ceebeae101cba47f8ca463/text/3999-std-only-i686-msvc.md">RFC 3999</a> for <code>i686-pc-windows-msvc</code> demotion, and <a rel="external" href="https://github.com/rust-lang/compiler-team/issues/1020">MCP 1020</a> for <code>i686-pc-windows-gnu</code> demotion.</p>
+'''

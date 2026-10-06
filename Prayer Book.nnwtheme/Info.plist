@@ -3,13 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>ThemeIdentifier</key>
-	<string>com.example.starter</string>
+	<string>com.thebenmeadows.prayerbook</string>
 	<key>Name</key>
-	<string>Starter</string>
+	<string>Prayer Book</string>
 	<key>CreatorHomePage</key>
-	<string>https://example.com</string>
+	<string>https://thebenmeadows.com/</string>
 	<key>CreatorName</key>
-	<string>Theme Author</string>
+	<string>Benjamin Meadows</string>
 	<key>Version</key>
 	<integer>1</integer>
 </dict>

@@ -1,0 +1,44 @@
+title = 'The earbuds with the best call quality are cheaper than ever'
+preferred_link = 'https://www.theverge.com/gadgets/1004111/soundcore-liberty-5-pro-prime-day-deal-sale'
+external_link_label = ""
+external_link = ""
+external_link_stripped = ""
+feed_link_title = 'The Verge'
+feed_link = 'https://www.theverge.com/rss/index.xml'
+byline = 'Brad Bourque'
+avatar_src = ""
+dateline_style = "articleDatelineTitle"
+datetime_medium = '2026-10-06T11:00:00-04:00'
+date_medium = '2026-10-06T11:00'
+body = '''
+											
+
+						
+<figure>
+
+<img alt="The Soundcore Liberty 5 Pro and 5 Pro Max on a mauve background next to an iPad and Apple keyboard." data-caption="" data-portal-copyright="Photo: John Higgins / The Verge" data-has-syndication-rights="1" src="https://platform.theverge.com/wp-content/uploads/sites/2/2026/05/268539_Soundcore_Liberty_5_Pro_JHiggins_0005.jpg?quality=90&#038;strip=all&#038;crop=0,0,100,100" />
+	<figcaption>
+		</figcaption>
+</figure>
+<p class="wp-block-paragraph">Normally $169.99, the <strong>Soundcore Liberty 5 Pro</strong> are discounted to $135.99 during Amazon’s October sale, beating their previous low price of $149.99, and coming in $14 lower than the AirPods 5. While these earbuds stand out for a number of reasons, like great ANC and a handy screen on the charging case, our favorite aspect is the excellent call quality.</p>
+<div class="product-block"><h3>Soundcore Liberty 5 Pro</h3>
+<figure class="product-image"><img width="300" height="200" src="https://platform.theverge.com/wp-content/uploads/sites/2/2026/05/268539_Soundcore_Liberty_5_Pro_JHiggins_0007.jpg?w=300" class="attachment-medium size-medium" alt="The blue Soundcore Liberty 5 Pro earbuds sitting next to their open case on a mauve background." /></figure>
+<h3>Where to Buy:</h3><ul><li><a href="https://www.amazon.com/Soundcore-Whisper-Clear-Cancelling-Wireless-Playtime/dp/B0GWLH8Z7D"> <strike>$169.99</strike> $135.99 at <strong>Amazon</strong></a></li><li><a href="https://www.soundcore.com/products/d1203-liberty-5-pro-anc-earbuds-clear-calls?variant=46723612213438"> <strike>$169.99</strike> $135.99 at <strong>Anker</strong></a></li><li><a href="https://www.bhphotovideo.com/c/product/1958632-REG/soundcore_by_anker_d1203z11_liberty_5_pro_.html/"> <strike>$169.99</strike> $149.99 at <strong>B&amp;H Photo</strong></a></li></ul></div>
+<p class="wp-block-paragraph">Even beyond the crisp call quality, these earbuds are equipped with several features that feel like a treat at this price, with a IP55 dust and water resistance rating, LDAC for high-resolution audio with supported devices, and built-in voice commands. Our only minor complaint was that the default sound settings are a bit bass-forward, but that was easy to fix thanks to a set of seven sound examples that let you dial in the profile for your tastes.</p>
+
+<h5 class="wp-block-heading"><a href="https://www.theverge.com/tech/935766/soundcore-liberty-5-pro-series-earbuds-review">Read our Soundcore Liberty 5 Pro review</a>.</h5>
+
+<div id="hype-desk-root"></div>
+
+  window.HYPE_DESK_CONFIG = {
+    productImageUrl: "https://platform.theverge.com/wp-content/uploads/sites/2/2026/09/ChatGPT-Image-Sep-30-2026-01_20_49-PM.png",
+    productImageAlt: "Tineco FLOOR ONE S9 Artist Steam",
+    productTitle: "Tineco FLOOR ONE S9 Artist Steam",
+    shortDescription: "Save $290 on Tineco’s steam-cleaning floor washer for October 6–7.",
+    longDescription:
+      "The S9 Artist Steam pairs 320°F HyperSteam technology, designed to help dissolve grease and stubborn stains, with a 180° lay-flat design for cleaning under furniture. It also features SmoothDrive 360° propulsion, a DualBlock Anti-Tangle design, and FlashDry self-cleaning with five minutes of 185°F hot-air drying. It’s $659 during the October 6–7 sale, down from $949.",
+    purchaseUrl: "https://www.amazon.com/dp/B0DY7G7C8P?th=1&amp;linkCode=ll2&amp;tag=theverge02-20&amp;linkId=944041d9f1338845e2aa4e7bc46d9ed5&amp;language=en_US&amp;gaOptInStatus=true&amp;ref_=as_li_ss_tl",
+    purchaseLinkText: "BUY AT AMAZON"
+  };
+						
+									'''
