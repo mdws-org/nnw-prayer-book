@@ -63,7 +63,9 @@ body {
 	line-height: 1.65;
 	margin-left: auto;
 	margin-right: auto;
-	max-width: 34em;
+	/* Wider than the site's 34em: the reading pane on a Mac is a different
+	   room, and at 34em most of it stood empty. */
+	max-width: 42em;
 	word-wrap: break-word;
 	font-kerning: normal;
 	font-variant-ligatures: common-ligatures;
@@ -521,8 +523,8 @@ a.footnote:hover,
 }
 
 /* ---- macOS ----
-   The site sets its text at 1.16rem on a 16px root; Medium matches that,
-   and the other sizes step around it. */
+   Medium is a half step above the site's 18.5px body; the measure is wider
+   here, and Garamond carries a little more size on a desktop pane. */
 @supports not (-webkit-touch-callout: none) {
 	body {
 		margin-top: 24px;
@@ -531,19 +533,19 @@ a.footnote:hover,
 		padding-right: 48px;
 	}
 	.smallText {
-		font-size: 16px;
+		font-size: 17px;
 	}
 	.mediumText {
-		font-size: 18.5px;
+		font-size: 19px;
 	}
 	.largeText {
-		font-size: 20.5px;
+		font-size: 21px;
 	}
 	.xlargeText {
-		font-size: 22.5px;
+		font-size: 23px;
 	}
 	.xxlargeText {
-		font-size: 25px;
+		font-size: 25.5px;
 	}
 	a u {
 		text-decoration: none;
