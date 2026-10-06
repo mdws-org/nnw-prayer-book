@@ -1,0 +1,16 @@
+title = 'Mistral Large 4: "Le Chonk"'
+preferred_link = 'https://mistral.ai/news/mistral-large-4/'
+external_link_label = ""
+external_link = ""
+external_link_stripped = ""
+feed_link_title = "Hacker News: Best"
+feed_link = "https://hnrss.org/best"
+byline = "speckx"
+avatar_src = ""
+dateline_style = "articleDatelineTitle"
+datetime_medium = "Oct 5, 2026 at 4:10 PM"
+date_medium = "Oct 5, 2026"
+body = '''<p>Article URL: <a href="https://mistral.ai/news/mistral-large-4/">https://mistral.ai/news/mistral-large-4/</a></p>
+<p>Comments URL: <a href="https://news.ycombinator.com/item?id=49978116">https://news.ycombinator.com/item?id=49978116</a></p>
+<p>Points: 250</p>
+<p># Comments: 28</p>'''

@@ -1,0 +1,22 @@
+<!-- Prayer Book: a NetNewsWire theme set after orthodoxprayers.net.
+     The page heads the way the site does: a running head (feed name left,
+     date right, on one hairline), the title, the byline as a red italic
+     attribution, a short rule, and the text.
+     #nnwImageIcon stays in the markup, hidden, because NetNewsWire's
+     reloadArticleImage() looks it up by id. lang="en" on the article is
+     what lets WebKit hyphenate: NetNewsWire's page declares no language,
+     and without one hyphens:auto does nothing. -->
+
+<header class="runningHead">
+	<a class="feedlink" href="[[feed_link]]">[[feed_link_title]]</a>
+	<a class="folio" href="[[preferred_link]]">[[date_medium]]</a>
+	<img id="nnwImageIcon" class="nnw-nozoom" src="[[avatar_src]]" alt="" hidden />
+</header>
+
+<article lang="en">
+<div class="articleTitle"><h1><a href="[[preferred_link]]">[[title]]</a></h1></div>
+<div class="attribution">[[byline]]</div>
+<hr class="rule" />
+<div class="externalLink">[[external_link_label]] <a href="[[external_link]]">[[external_link_stripped]]</a></div>
+<div id="bodyContainer" class="articleBody [[text_size_class]]">[[body]]</div>
+</article>
