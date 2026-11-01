@@ -188,6 +188,18 @@ hr.rule {
 .articleBody li p {
 	text-align: left;
 }
+/* Aggregator "label: link" lines (Hacker News, Lobsters) carry a bare URL:
+   one word longer than a phone's line. Justified and hyphenated, it took a
+   false hyphen and pushed the label's few words apart across the measure.
+   Set these lines ragged and let the URL break at any character instead. */
+.articleBody p:has(> a:only-child):is(:has(+ p > a:only-child), p:has(> a:only-child) + p) {
+	text-align: left;
+}
+.articleBody p:has(> a:only-child):is(:has(+ p > a:only-child), p:has(> a:only-child) + p) > a {
+	-webkit-hyphens: manual;
+	hyphens: manual;
+	word-break: break-all;
+}
 mark {
 	background: color-mix(in srgb, var(--accent) 28%, transparent);
 	color: inherit;
