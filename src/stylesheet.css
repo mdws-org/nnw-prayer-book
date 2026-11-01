@@ -77,8 +77,10 @@ body {
 	color: var(--ink-soft);
 	text-decoration: none;
 }
-.runningHead a:hover {
-	color: var(--rubric);
+@media (hover: hover) {
+	.runningHead a:hover {
+		color: var(--rubric);
+	}
 }
 .runningHead .feedlink {
 	overflow: hidden;
@@ -107,8 +109,10 @@ body {
 	color: var(--ink);
 	text-decoration: none;
 }
-.articleTitle a:hover {
-	color: var(--rubric);
+@media (hover: hover) {
+	.articleTitle a:hover {
+		color: var(--rubric);
+	}
 }
 .articleTitle:has(a:empty) {
 	display: none;
@@ -233,16 +237,20 @@ a:visited {
 	color: var(--rubric);
 	text-decoration: none;
 }
-a:hover {
-	text-decoration: underline;
-	text-decoration-thickness: 2px;
-	text-underline-offset: 0.18em;
+/* Hover styles only where a pointer can hover: on a phone a tapped link
+   would keep them after the tap. */
+@media (hover: hover) {
+	a:hover {
+		text-decoration: underline;
+		text-decoration-thickness: 2px;
+		text-underline-offset: 0.18em;
+	}
+	.articleBody a:has(img):hover {
+		text-decoration: none;
+	}
 }
 a :is(i, em) {
 	color: inherit;
-}
-.articleBody a:has(img):hover {
-	text-decoration: none;
 }
 
 /* Headings follow the site's psalm head: red small caps, centered. */
@@ -466,15 +474,25 @@ pre code {
 	background: var(--bg);
 }
 body a.footnote,
-body a.footnote:visited,
-.newsfoot-footnote-popover + a.footnote:hover {
+body a.footnote:visited {
 	background: none;
 	color: var(--rubric);
 	text-decoration: none;
 }
-a.footnote:hover,
+@media (hover: hover) {
+	.newsfoot-footnote-popover + a.footnote:hover {
+		background: none;
+		color: var(--rubric);
+		text-decoration: none;
+	}
+}
 .newsfoot-footnote-popover + a.footnote {
 	text-decoration: underline;
+}
+@media (hover: hover) {
+	a.footnote:hover {
+		text-decoration: underline;
+	}
 }
 
 .feedbin--article-wrap {
