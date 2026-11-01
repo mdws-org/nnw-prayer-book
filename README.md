@@ -8,6 +8,8 @@ The design is taken from [OrthodoxPrayers.net](https://orthodoxprayers.net/), a 
 
 ![Prayer Book on the Mac](screenshots/theme-preview.png)
 
+https://github.com/user-attachments/assets/c46b6fc1-85ac-45f8-885b-8b1ac1e6689f
+
 ## Install
 
 On iOS and macOS, open this link on the device:
