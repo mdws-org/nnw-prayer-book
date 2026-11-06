@@ -335,6 +335,18 @@ iframe {
 	max-width: 100%;
 	margin: 0 auto;
 }
+/* Icon SVGs sized only by the site's own classes (Tailwind "h-6 w-6") have
+   no width here and would fill the column; set them at text size. */
+.articleBody svg:not([width]):is([viewBox="0 0 24 24"], [viewBox="0 0 20 20"], [viewBox="0 0 16 16"]) {
+	width: 1em;
+	height: 1em;
+	vertical-align: -0.125em;
+}
+/* A site's light/dark switch (a checkbox and its label) is page chrome that
+   Reader View sometimes keeps; NetNewsWire has its own appearance setting. */
+.articleBody :has(> input[type="checkbox"] + label[for]) {
+	display: none;
+}
 iframe.nnw-constrained {
 	max-height: 50vw;
 }
