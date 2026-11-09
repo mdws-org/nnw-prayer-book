@@ -227,6 +227,11 @@ article:not(:has(.articleTitle a:empty)) .articleBody p:not(:is(blockquote, li, 
 	line-height: 0.82;
 	padding: 0.06em 0.12em 0 0;
 	font-weight: 500;
+	/* ::first-letter takes in the punctuation around the letter, so a
+	   paragraph opening on a quotation drops all of "I’ together. Hung,
+	   the quote would sit left of the column and the float would keep its
+	   unhung width, leaving a gap before the rest of the word. */
+	hanging-punctuation: none;
 }
 
 /* Links are rubrics: red, the printed books' mark for "not the text --
