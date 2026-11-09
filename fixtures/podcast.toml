@@ -1,0 +1,52 @@
+# nnw-theme catalog fixture: podcast (catalog version 1)
+# Markup: a podcast episode as NetNewsWire renders it from RSS, captured 2026-10: show
+#   notes in the body, an <enclosure> for the episode's audio, and the episode's
+#   itunes:image as the article image. Modeled on ATP 311 in NetNewsWire's own tests.
+# Text and links are synthetic; the structure and the enclosure's fields are real.
+# Exercises: the [[enclosures]] audio player and its caption (title · duration · size),
+#   and the article image NetNewsWire shows as an enclosure when nothing else is visual.
+# Enclosures need NetNewsWire with enclosure support (upstream main, October 2026).
+# Refresh: npx nnw-theme@2 fixture add podcast --force
+
+byline = 'Morgan Hale, Priya Nandakumar, Theo Brandt'
+date_long = 'October 22, 2026'
+date_medium = 'Oct 22, 2026'
+date_short = '10/22/26'
+dateline_style = 'articleDateline'
+datetime_long = 'October 22, 2026 at 6:15:00 PM'
+datetime_medium = 'Oct 22, 2026 at 6:15 PM'
+datetime_short = '10/22/26, 6:15 PM'
+feed_link = 'https://example.org/podcast/'
+feed_link_title = 'Three Desks Over'
+preferred_link = 'https://example.org/podcast/311'
+time_long = '6:15:00 PM PDT'
+time_medium = '6:15:00 PM'
+time_short = '6:15 PM'
+title = '311: The Long One'
+image_url = 'https://example.org/podcast/artwork/311-artwork.jpg'
+body = '''
+<p>The follow-up runs long, the main topic runs longer, and an After Show question finally gets the answer it deserves.</p>
+<ul>
+<li>Follow-up:<ul>
+<li><a href="https://example.org/notes/keyboard-repair">The keyboard repair program</a>, again</li>
+<li>Listener mail about <a href="https://example.org/notes/backups">offsite backups</a></li>
+</ul></li>
+<li><a href="https://example.org/notes/video-calls">Video calls that join themselves</a></li>
+<li><a href="https://example.org/notes/app-review">What app review is for</a></li>
+<li>Post-show: <a href="https://example.org/notes/coffee">the coffee grinder that won’t quit</a></li>
+</ul>
+<p>Sponsored by:</p>
+<ul>
+<li><a href="https://example.org/sponsors/notebooks">Field Notebooks</a>: Paper that keeps up. Use code <strong>DESKS</strong> for 20% off.</li>
+<li><a href="https://example.org/sponsors/hosting">Quiet Hosting</a>: Your site, faster, with nothing to configure.</li>
+</ul>
+<p>Become a member for ad-free episodes and our <a href="https://example.org/podcast/bootleg">bootleg feed</a>, with every show’s raw recording.</p>
+'''
+
+[[attachments]]
+url = 'https://example.org/podcast/audio/tdo311.mp3'
+mime_type = 'audio/mpeg'
+title = '311: The Long One'
+size_in_bytes = 54919661
+duration_in_seconds = 6849
+medium = 'audio'

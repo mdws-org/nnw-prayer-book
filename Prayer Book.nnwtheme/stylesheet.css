@@ -382,13 +382,38 @@ figure {
 /* A caption: figcaption, or the paragraph some feeds put inside the figure
    instead (The Verge leaves figcaption empty and sets the credit in a p). */
 figcaption,
-figure > :is(p, div, span, small):not(:has(img, picture, video, iframe)) {
+figure > :is(p, div, span, small):not(:has(img, picture, video, iframe)),
+.nnw-primary-image-caption,
+.nnw-enclosure-caption {
 	margin: 0.5em 0 0;
 	text-align: center;
 	color: var(--ink-soft);
 	font-style: italic;
 	font-size: 0.9em;
 	line-height: 1.4;
+}
+/* The feed's own media (NetNewsWire 7.3: enclosures, Media RSS, podcast
+   audio), which NetNewsWire writes outside the article text. The primary
+   picture stands between the rule and the text with a paragraph's space
+   below it; the rest follow the text, set off by the rule's spacing. */
+.nnw-primary-media,
+.nnw-primary-image {
+	margin: 0 0 1.4em;
+}
+.nnw-enclosures {
+	margin-top: 2.2em;
+}
+.nnw-enclosure {
+	margin: 1.4em 0;
+}
+.nnw-primary-image img,
+.nnw-enclosure :is(img, video, iframe) {
+	display: block;
+	width: 100%;
+}
+.nnw-enclosure audio {
+	display: block;
+	width: 100%;
 }
 .iframeWrap {
 	position: relative;

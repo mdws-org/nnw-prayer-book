@@ -1,0 +1,23 @@
+<!-- Prayer Book for NetNewsWire 7.3 and later, which reads this file in
+     place of template.html. It is template.html with two additions from
+     7.3: the feed's primary picture, audio or video (from the feed's
+     enclosures, not the body) after the rule, where an illumination opens
+     a page, and the remaining enclosures after the text. Both sit outside
+     the body container, so the red capital still opens the first paragraph.
+     Older versions never read this file and keep template.html. -->
+
+<header class="runningHead">
+	<a class="feedlink" href="[[feed_link]]">[[feed_link_title]]</a>
+	<a class="folio" href="[[preferred_link]]">[[date_medium]]</a>
+	<img id="nnwImageIcon" class="nnw-nozoom" src="[[avatar_src]]" alt="" hidden />
+</header>
+
+<article lang="en">
+<div class="articleTitle"><h1><a href="[[preferred_link]]">[[title]]</a></h1></div>
+<div class="attribution">[[byline]]</div>
+<hr class="rule" />
+<div class="externalLink">[[external_link_label]] <a href="[[external_link]]">[[external_link_stripped]]</a></div>
+[[primary_media]]
+<div id="bodyContainer" class="articleBody [[text_size_class]]">[[body]]</div>
+[[enclosures]]
+</article>

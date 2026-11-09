@@ -31,9 +31,9 @@ Day and Night follow the system appearance.
 
 ## Build
 
-`src/` is the source. `build.sh` embeds the two EB Garamond files into `stylesheet.css` as data URIs (NetNewsWire cannot load a font file from inside a bundle) and writes the bundle. `./build.sh --install` also copies it into NetNewsWire's Themes folder on this Mac. Edit `src/`, never the bundle.
+`src/` is the source. `build.sh` embeds the two EB Garamond files into `stylesheet.css` as data URIs (NetNewsWire cannot load a font file from inside a bundle) and writes the bundle. `./build.sh --install` also copies it into NetNewsWire's Themes folder on this Mac. Edit `src/`, never the bundle. NetNewsWire 7.3 and later read `template7.3.html` in place of `template.html`; it is the same page plus the feed's own media (enclosures, Media RSS, podcast audio): the primary picture under the rule and the rest after the text. Keep the two templates in step.
 
-`fixtures/` holds articles from live feeds (The Verge, Ars Technica, Daring Fireball, Platformer in feed and Reader View shape, Hacker News, r/programming, Mastodon, YouTube, Simon Willison, the Rust blog). `npx nnw-theme@2 check` renders every fixture through NetNewsWire's own template and scripts in WebKit for iPhone, iPad and Mac, light and dark. `fixtures/refresh.py <dir>` fetches fresh ones.
+`fixtures/` holds articles from live feeds (The Verge, Ars Technica, Daring Fireball, Platformer in feed and Reader View shape, Hacker News, r/programming, Mastodon, YouTube, Simon Willison, the Rust blog, Time Extension), plus the `podcast` and `media-rss` enclosure fixtures from `nnw-theme fixture add`. `npx nnw-theme@2 check` renders every fixture through NetNewsWire's own template and scripts in WebKit for iPhone, iPad and Mac, light and dark. `fixtures/refresh.py <dir>` fetches fresh ones.
 
 ## Licenses
 
