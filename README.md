@@ -4,7 +4,7 @@
 A NetNewsWire theme by [Benjamin Meadows](https://thebenmeadows.com/).
 <!-- nnw-theme-identity:end -->
 
-The design is taken from [OrthodoxPrayers.net](https://orthodoxprayers.net/), a prayer book for the browser: EB Garamond, a parchment page by day and a vigil page by night, red for every link and label, justified and hyphenated text, and a red capital that drops two lines at the start of each article.
+The design is taken from [OrthodoxPrayers.net](https://orthodoxprayers.net/), a prayer book for the browser: EB Garamond, a parchment page by day and a vigil page by night, red for every link and label, justified and hyphenated text (ragged right on a phone's narrow line), and a red capital that drops two lines at the start of each article.
 
 ![Prayer Book on the Mac](screenshots/theme-preview.png)
 

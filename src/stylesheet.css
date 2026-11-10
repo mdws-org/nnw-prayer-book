@@ -174,20 +174,37 @@ hr.rule {
 .articleBody dd {
 	-webkit-hyphens: auto;
 	hyphens: auto;
-	/* Words of six letters or more, three on each side of the break, and no
-	   more than two hyphenated lines in a row. */
-	-webkit-hyphenate-limit-chars: 6 3 3;
+	/* No more than two hyphenated lines in a row. */
 	-webkit-hyphenate-limit-lines: 2;
 	hanging-punctuation: first;
 }
-/* Paragraphs are justified as the prayers are; hyphenation (lang="en" in
-   the template) is what lets the setting survive a phone's ~36-character
-   line. List items are short lines and stay ragged, as the site sets its
-   petitions: justified, a line just short of the measure stretches its
-   word spaces across it. */
+/* Paragraphs are justified as the prayers are, hyphenated (lang="en" in
+   the template). List items are short lines and stay ragged, as the site
+   sets its petitions: justified, a line just short of the measure
+   stretches its word spaces across it. */
 .articleBody p {
 	text-align: justify;
 	margin: 0 0 1.15em;
+}
+/* On a phone's ~40-character line the site sets its prose ragged right:
+   justified there, word spaces stretched past twice their width on one
+   line in six. Hyphenation stays on to keep the rag shallow, with at least
+   three letters on each side of a break. The limit is set here only: on
+   the justified wide column it widened the word spaces. */
+@media (max-width: 600px) {
+	.articleBody {
+		line-height: 1.55;
+	}
+	.articleBody p {
+		text-align: left;
+	}
+	.articleBody p,
+	.articleBody li,
+	.articleBody dd {
+		-webkit-hyphenate-limit-before: 3;
+		-webkit-hyphenate-limit-after: 3;
+		hyphenate-limit-chars: 6 3 3;
+	}
 }
 .articleBody li p {
 	text-align: left;
@@ -321,6 +338,12 @@ blockquote {
 blockquote :is(i, em) {
 	font-style: normal;
 }
+/* When the opening paragraph is one short line ("OpenAI, today:"), the
+   block after it would start beside the capital, its margin rule or its
+   bullets running under the letter. These start below it instead. */
+.articleBody :is(blockquote, ul, ol, pre, figure, table, .nnw-overflow) {
+	clear: left;
+}
 
 hr {
 	border: none;
@@ -367,9 +390,10 @@ figure {
 	margin-bottom: 1.4em;
 }
 /* A caption: figcaption, or the paragraph some feeds put inside the figure
-   instead (The Verge leaves figcaption empty and sets the credit in a p). */
+   instead (The Verge leaves figcaption empty and sets the credit in a p).
+   The .articleBody prefix is what lets it outrank the paragraph rules. */
 figcaption,
-figure > :is(p, div, span, small):not(:has(img, picture, video, iframe)),
+.articleBody figure > :is(p, div, span, small):not(:has(img, picture, video, iframe)),
 .nnw-primary-image-caption,
 .nnw-enclosure-caption {
 	margin: 0.5em 0 0;
@@ -393,8 +417,13 @@ figure > :is(p, div, span, small):not(:has(img, picture, video, iframe)),
 .nnw-enclosure {
 	margin: 1.4em 0;
 }
+/* Players fill the column. A picture keeps its own width up to the column
+   (a feed's 144px logo is not stretched across it) and sits centered. */
 .nnw-primary-image img,
-.nnw-enclosure :is(img, video, iframe) {
+.nnw-enclosure img {
+	display: block;
+}
+.nnw-enclosure :is(video, iframe) {
 	display: block;
 	width: 100%;
 }
@@ -600,10 +629,14 @@ body a.footnote:visited {
 	.largeText {
 		font-size: 21px;
 	}
-	.xlargeText {
+	/* NetNewsWire writes these two with a capital L; its bundled themes
+	   select the lowercase spelling. */
+	.xlargeText,
+	.xLargeText {
 		font-size: 23px;
 	}
-	.xxlargeText {
+	.xxlargeText,
+	.xxLargeText {
 		font-size: 25.5px;
 	}
 	a u {
