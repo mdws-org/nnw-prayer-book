@@ -1,0 +1,58 @@
+<!-- Prayer Book for NetNewsWire 7.3 and later, which reads this file in
+     place of template.html. It is template.html with two additions from
+     7.3: the feed's primary picture, audio or video (from the feed's
+     enclosures, not the body) after the rule, where an illumination opens
+     a page, and the remaining enclosures after the text. Both sit outside
+     the body container, so the red capital still opens the first paragraph,
+     in wrappers that carry the Mac text size so captions follow it.
+     Older versions never read this file and keep template.html. -->
+
+<header class="runningHead">
+	<a class="feedlink" href="[[feed_link]]">[[feed_link_title]]</a>
+	<a class="folio" href="[[preferred_link]]">[[date_medium]]</a>
+	<img id="nnwImageIcon" class="nnw-nozoom" src="[[avatar_src]]" alt="" hidden />
+</header>
+
+<article lang="en">
+<div class="articleTitle"><h1><a href="[[preferred_link]]">[[title]]</a></h1></div>
+<div class="attribution">[[byline]]</div>
+<hr class="rule" />
+<div class="externalLink">[[external_link_label]] <a href="[[external_link]]">[[external_link_stripped]]</a></div>
+<div class="[[text_size_class]]">[[primary_media]]</div>
+<div id="bodyContainer" class="articleBody [[text_size_class]]">[[body]]</div>
+<div class="[[text_size_class]]">[[enclosures]]</div>
+</article>
+<script>
+// A one-line opening paragraph keeps its red letter at text size, not dropped (see .shortOpening in
+// the stylesheet). Measured with the capital in place, and again whenever
+// the column or the text size changes.
+(function () {
+	var body = document.getElementById("bodyContainer");
+	if (!body) return;
+	function mark() {
+		var ps = body.getElementsByTagName("p");
+		for (var i = 0; i < ps.length; i++) {
+			var p = ps[i];
+			var cs = getComputedStyle(p);
+			if (cs.getPropertyValue("--drop-cap").trim() !== "1") continue;
+			p.classList.remove("shortOpening");
+			var line = parseFloat(cs.lineHeight);
+			var range = document.createRange();
+			range.selectNodeContents(p);
+			var rects = range.getClientRects();
+			var top = Infinity, bottom = -Infinity;
+			for (var j = 0; j < rects.length; j++) {
+				// the capital's own box is the tall one; lines of text are one line high
+				if (rects[j].height > line * 1.5) continue;
+				top = Math.min(top, rects[j].top);
+				bottom = Math.max(bottom, rects[j].bottom);
+			}
+			if (line > 0 && bottom - top < line * 1.5) p.classList.add("shortOpening");
+			return;
+		}
+	}
+	mark();
+	if (window.ResizeObserver) new ResizeObserver(mark).observe(body);
+	window.addEventListener("load", mark);
+})();
+</script>

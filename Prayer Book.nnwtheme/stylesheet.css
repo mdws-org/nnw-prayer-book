@@ -187,20 +187,37 @@ hr.rule {
 .articleBody dd {
 	-webkit-hyphens: auto;
 	hyphens: auto;
-	/* Words of six letters or more, three on each side of the break, and no
-	   more than two hyphenated lines in a row. */
-	-webkit-hyphenate-limit-chars: 6 3 3;
+	/* No more than two hyphenated lines in a row. */
 	-webkit-hyphenate-limit-lines: 2;
 	hanging-punctuation: first;
 }
-/* Paragraphs are justified as the prayers are; hyphenation (lang="en" in
-   the template) is what lets the setting survive a phone's ~36-character
-   line. List items are short lines and stay ragged, as the site sets its
-   petitions: justified, a line just short of the measure stretches its
-   word spaces across it. */
+/* Paragraphs are justified as the prayers are, hyphenated (lang="en" in
+   the template). List items are short lines and stay ragged, as the site
+   sets its petitions: justified, a line just short of the measure
+   stretches its word spaces across it. */
 .articleBody p {
 	text-align: justify;
 	margin: 0 0 1.15em;
+}
+/* On a phone's ~40-character line the site sets its prose ragged right:
+   justified there, word spaces stretched past twice their width on one
+   line in six. Hyphenation stays on to keep the rag shallow, with at least
+   three letters on each side of a break. The limit is set here only: on
+   the justified wide column it widened the word spaces. */
+@media (max-width: 600px) {
+	.articleBody {
+		line-height: 1.55;
+	}
+	.articleBody p {
+		text-align: left;
+	}
+	.articleBody p,
+	.articleBody li,
+	.articleBody dd {
+		-webkit-hyphenate-limit-before: 3;
+		-webkit-hyphenate-limit-after: 3;
+		hyphenate-limit-chars: 6 3 3;
+	}
 }
 .articleBody li p {
 	text-align: left;
@@ -240,6 +257,35 @@ article:not(:has(.articleTitle a:empty)) .articleBody p:not(:is(blockquote, li, 
 	line-height: 0.82;
 	padding: 0.06em 0.12em 0 0;
 	font-weight: 500;
+	/* ::first-letter takes in the punctuation around the letter, so a
+	   paragraph opening on a quotation drops all of "I’ together. Hung,
+	   the quote would sit left of the column and the float would keep its
+	   unhung width, leaving a gap before the rest of the word. */
+	hanging-punctuation: none;
+}
+/* When the paragraph that carries the capital is one short line ("OpenAI,
+   today:"), whatever follows would start beside the capital's foot: the
+   next paragraph pushed in, a quotation's margin rule under the letter, a
+   hairline through it. The element straight after that paragraph starts
+   below the capital instead, at the ordinary paragraph distance. Only that
+   one element is cleared, so pictures a feed floats are left alone. */
+article:not(:has(.articleTitle a:empty)) .articleBody p:not(:is(blockquote, li, figcaption, figure, table) p):not(:has(> :is(img, picture, video, iframe, svg):first-child)):not(:has(> a:first-child > img)):not(:has(> a:only-child):has(+ p > a:only-child)):not(.articleBody p:not(:is(blockquote, li, figcaption, figure, table) p):not(:has(> :is(img, picture, video, iframe, svg):first-child)):not(:has(> a:first-child > img)) ~ p):not(.articleBody :has(p:not(:is(blockquote, li, figcaption, figure, table) p)) ~ p):not(.articleBody p:not(:is(blockquote, li, figcaption, figure, table) p):not(:has(> :is(img, picture, video, iframe, svg):first-child)):not(:has(> a:first-child > img)) ~ * p):not(.articleBody :has(p:not(:is(blockquote, li, figcaption, figure, table) p)) ~ * p) + * {
+	clear: left;
+}
+/* The template's script reads this to find the paragraph that carries the
+   capital, and marks it .shortOpening when its text is a single line: a
+   capital two lines tall has nothing to sit beside there, so the letter
+   stays at text size, still red and bold. With Article JavaScript off the capital stays and
+   the rule above keeps what follows clear of it. */
+article:not(:has(.articleTitle a:empty)) .articleBody p:not(:is(blockquote, li, figcaption, figure, table) p):not(:has(> :is(img, picture, video, iframe, svg):first-child)):not(:has(> a:first-child > img)):not(:has(> a:only-child):has(+ p > a:only-child)):not(.articleBody p:not(:is(blockquote, li, figcaption, figure, table) p):not(:has(> :is(img, picture, video, iframe, svg):first-child)):not(:has(> a:first-child > img)) ~ p):not(.articleBody :has(p:not(:is(blockquote, li, figcaption, figure, table) p)) ~ p):not(.articleBody p:not(:is(blockquote, li, figcaption, figure, table) p):not(:has(> :is(img, picture, video, iframe, svg):first-child)):not(:has(> a:first-child > img)) ~ * p):not(.articleBody :has(p:not(:is(blockquote, li, figcaption, figure, table) p)) ~ * p) {
+	--drop-cap: 1;
+}
+.articleBody p.shortOpening::first-letter {
+	font-size: inherit !important;
+	font-weight: 600 !important;
+	line-height: inherit !important;
+	float: none !important;
+	padding: 0 !important;
 }
 
 /* Links are rubrics: red, the printed books' mark for "not the text --
@@ -375,15 +421,52 @@ figure {
 	margin-bottom: 1.4em;
 }
 /* A caption: figcaption, or the paragraph some feeds put inside the figure
-   instead (The Verge leaves figcaption empty and sets the credit in a p). */
+   instead (The Verge leaves figcaption empty and sets the credit in a p).
+   The .articleBody prefix is what lets it outrank the paragraph rules. */
 figcaption,
-figure > :is(p, div, span, small):not(:has(img, picture, video, iframe)) {
+.articleBody figure > :is(p, div, span, small):not(:has(img, picture, video, iframe)),
+.nnw-primary-image-caption,
+.nnw-enclosure-caption {
 	margin: 0.5em 0 0;
 	text-align: center;
 	color: var(--ink-soft);
 	font-style: italic;
 	font-size: 0.9em;
 	line-height: 1.4;
+}
+/* A paragraph inside a figcaption (WordPress, Substack) is the caption's
+   text, not body text: centered with it, no paragraph gap. */
+.articleBody figcaption p {
+	text-align: center;
+	margin: 0;
+}
+/* The feed's own media (NetNewsWire 7.3: enclosures, Media RSS, podcast
+   audio), which NetNewsWire writes outside the article text. The primary
+   picture stands between the rule and the text with a paragraph's space
+   below it; the rest follow the text, set off by the rule's spacing. */
+.nnw-primary-media,
+.nnw-primary-image {
+	margin: 0 0 1.4em;
+}
+.nnw-enclosures {
+	margin-top: 2.2em;
+}
+.nnw-enclosure {
+	margin: 1.4em 0;
+}
+/* Players fill the column. A picture keeps its own width up to the column
+   (a feed's 144px logo is not stretched across it) and sits centered. */
+.nnw-primary-image img,
+.nnw-enclosure img {
+	display: block;
+}
+.nnw-enclosure :is(video, iframe) {
+	display: block;
+	width: 100%;
+}
+.nnw-enclosure audio {
+	display: block;
+	width: 100%;
 }
 .iframeWrap {
 	position: relative;
@@ -553,7 +636,11 @@ body a.footnote:visited {
 		padding-right: 20px;
 		word-break: break-word;
 	}
-	.articleBody {
+	/* The feed's media sits outside the text and takes the same size, so
+	   its captions match a caption inside the article. */
+	.articleBody,
+	.nnw-primary-media,
+	.nnw-enclosures {
 		font-size: 1.08rem;
 	}
 	.articleTitle h1 {
@@ -583,10 +670,14 @@ body a.footnote:visited {
 	.largeText {
 		font-size: 21px;
 	}
-	.xlargeText {
+	/* NetNewsWire writes these two with a capital L; its bundled themes
+	   select the lowercase spelling. */
+	.xlargeText,
+	.xLargeText {
 		font-size: 23px;
 	}
-	.xxlargeText {
+	.xxlargeText,
+	.xxLargeText {
 		font-size: 25.5px;
 	}
 	a u {

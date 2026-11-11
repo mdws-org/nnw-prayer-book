@@ -7,7 +7,7 @@ set -euo pipefail
 here=${0:A:h}
 out="$here/Prayer Book.nnwtheme"
 mkdir -p "$out"
-cp "$here/src/Info.plist" "$here/src/template.html" "$here/src/NOTICE.txt" "$here/src/LICENSE" "$out/"
+cp "$here/src/Info.plist" "$here/src/template.html" "$here/src/template7.3.html" "$here/src/NOTICE.txt" "$here/src/LICENSE" "$out/"
 
 face() { # style file
 	print -r -- "@font-face {
