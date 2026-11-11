@@ -22,3 +22,37 @@
 <div id="bodyContainer" class="articleBody [[text_size_class]]">[[body]]</div>
 <div class="[[text_size_class]]">[[enclosures]]</div>
 </article>
+<script>
+// A one-line opening paragraph keeps its red letter at text size, not dropped (see .shortOpening in
+// the stylesheet). Measured with the capital in place, and again whenever
+// the column or the text size changes.
+(function () {
+	var body = document.getElementById("bodyContainer");
+	if (!body) return;
+	function mark() {
+		var ps = body.getElementsByTagName("p");
+		for (var i = 0; i < ps.length; i++) {
+			var p = ps[i];
+			var cs = getComputedStyle(p);
+			if (cs.getPropertyValue("--drop-cap").trim() !== "1") continue;
+			p.classList.remove("shortOpening");
+			var line = parseFloat(cs.lineHeight);
+			var range = document.createRange();
+			range.selectNodeContents(p);
+			var rects = range.getClientRects();
+			var top = Infinity, bottom = -Infinity;
+			for (var j = 0; j < rects.length; j++) {
+				// the capital's own box is the tall one; lines of text are one line high
+				if (rects[j].height > line * 1.5) continue;
+				top = Math.min(top, rects[j].top);
+				bottom = Math.max(bottom, rects[j].bottom);
+			}
+			if (line > 0 && bottom - top < line * 1.5) p.classList.add("shortOpening");
+			return;
+		}
+	}
+	mark();
+	if (window.ResizeObserver) new ResizeObserver(mark).observe(body);
+	window.addEventListener("load", mark);
+})();
+</script>

@@ -250,6 +250,30 @@ article:not(:has(.articleTitle a:empty)) .articleBody p:not(:is(blockquote, li, 
 	   unhung width, leaving a gap before the rest of the word. */
 	hanging-punctuation: none;
 }
+/* When the paragraph that carries the capital is one short line ("OpenAI,
+   today:"), whatever follows would start beside the capital's foot: the
+   next paragraph pushed in, a quotation's margin rule under the letter, a
+   hairline through it. The element straight after that paragraph starts
+   below the capital instead, at the ordinary paragraph distance. Only that
+   one element is cleared, so pictures a feed floats are left alone. */
+article:not(:has(.articleTitle a:empty)) .articleBody p:not(:is(blockquote, li, figcaption, figure, table) p):not(:has(> :is(img, picture, video, iframe, svg):first-child)):not(:has(> a:first-child > img)):not(:has(> a:only-child):has(+ p > a:only-child)):not(.articleBody p:not(:is(blockquote, li, figcaption, figure, table) p):not(:has(> :is(img, picture, video, iframe, svg):first-child)):not(:has(> a:first-child > img)) ~ p):not(.articleBody :has(p:not(:is(blockquote, li, figcaption, figure, table) p)) ~ p):not(.articleBody p:not(:is(blockquote, li, figcaption, figure, table) p):not(:has(> :is(img, picture, video, iframe, svg):first-child)):not(:has(> a:first-child > img)) ~ * p):not(.articleBody :has(p:not(:is(blockquote, li, figcaption, figure, table) p)) ~ * p) + * {
+	clear: left;
+}
+/* The template's script reads this to find the paragraph that carries the
+   capital, and marks it .shortOpening when its text is a single line: a
+   capital two lines tall has nothing to sit beside there, so the letter
+   stays at text size, still red and bold. With Article JavaScript off the capital stays and
+   the rule above keeps what follows clear of it. */
+article:not(:has(.articleTitle a:empty)) .articleBody p:not(:is(blockquote, li, figcaption, figure, table) p):not(:has(> :is(img, picture, video, iframe, svg):first-child)):not(:has(> a:first-child > img)):not(:has(> a:only-child):has(+ p > a:only-child)):not(.articleBody p:not(:is(blockquote, li, figcaption, figure, table) p):not(:has(> :is(img, picture, video, iframe, svg):first-child)):not(:has(> a:first-child > img)) ~ p):not(.articleBody :has(p:not(:is(blockquote, li, figcaption, figure, table) p)) ~ p):not(.articleBody p:not(:is(blockquote, li, figcaption, figure, table) p):not(:has(> :is(img, picture, video, iframe, svg):first-child)):not(:has(> a:first-child > img)) ~ * p):not(.articleBody :has(p:not(:is(blockquote, li, figcaption, figure, table) p)) ~ * p) {
+	--drop-cap: 1;
+}
+.articleBody p.shortOpening::first-letter {
+	font-size: inherit !important;
+	font-weight: 600 !important;
+	line-height: inherit !important;
+	float: none !important;
+	padding: 0 !important;
+}
 
 /* Links are rubrics: red, the printed books' mark for "not the text --
    attend differently". No underline at rest; a heavier underline on hover
@@ -338,12 +362,6 @@ blockquote {
 blockquote :is(i, em) {
 	font-style: normal;
 }
-/* When the opening paragraph is one short line ("OpenAI, today:"), the
-   block after it would start beside the capital, its margin rule or its
-   bullets running under the letter. These start below it instead. */
-.articleBody :is(blockquote, ul, ol, pre, figure, table, .nnw-overflow) {
-	clear: left;
-}
 
 hr {
 	border: none;
@@ -402,6 +420,12 @@ figcaption,
 	font-style: italic;
 	font-size: 0.9em;
 	line-height: 1.4;
+}
+/* A paragraph inside a figcaption (WordPress, Substack) is the caption's
+   text, not body text: centered with it, no paragraph gap. */
+.articleBody figcaption p {
+	text-align: center;
+	margin: 0;
 }
 /* The feed's own media (NetNewsWire 7.3: enclosures, Media RSS, podcast
    audio), which NetNewsWire writes outside the article text. The primary
@@ -599,7 +623,11 @@ body a.footnote:visited {
 		padding-right: 20px;
 		word-break: break-word;
 	}
-	.articleBody {
+	/* The feed's media sits outside the text and takes the same size, so
+	   its captions match a caption inside the article. */
+	.articleBody,
+	.nnw-primary-media,
+	.nnw-enclosures {
 		font-size: 1.08rem;
 	}
 	.articleTitle h1 {
