@@ -179,18 +179,22 @@ hr.rule {
 	hanging-punctuation: first;
 }
 /* Paragraphs are justified as the prayers are, hyphenated (lang="en" in
-   the template). List items are short lines and stay ragged, as the site
-   sets its petitions: justified, a line just short of the measure
-   stretches its word spaces across it. */
+   the template). The template's script sets their lines (src/justify): the
+   breaks chosen for the whole paragraph, a word space that closes as well
+   as opens, punctuation hung at the line ends. List items are short lines
+   and stay ragged, as the site sets its petitions: justified, a line just
+   short of the measure stretches its word spaces across it. */
 .articleBody p {
 	text-align: justify;
 	margin: 0 0 1.15em;
 }
-/* On a phone's ~40-character line the site sets its prose ragged right:
-   justified there, word spaces stretched past twice their width on one
-   line in six. Hyphenation stays on to keep the rag shallow, with at least
-   three letters on each side of a break. The limit is set here only: on
-   the justified wide column it widened the word spaces. */
+/* On a phone's ~40-character line the browser's own justification
+   stretches a word space past twice its width on one line in five, so
+   without the script, and for a paragraph the script leaves alone, the
+   text is ragged right there. Hyphenation stays on to keep the rag
+   shallow, with at least three letters on each side of a break. The limit
+   is set here only: on the justified wide column it widened the word
+   spaces. */
 @media (max-width: 600px) {
 	.articleBody {
 		line-height: 1.55;
@@ -205,6 +209,23 @@ hr.rule {
 		-webkit-hyphenate-limit-after: 3;
 		hyphenate-limit-chars: 6 3 3;
 	}
+}
+/* The script asks which paragraphs it may set by marking the root
+   "choosing": every paragraph is justified for that moment unless a rule
+   below says otherwise. :where() keeps this rule as weak as the one it
+   answers. A paragraph whose lines are set is ragged to the browser: each
+   line is already as wide as the column. The script's class names carry a
+   prefix so that a feed's own classes are never taken for them. */
+@media (max-width: 600px) {
+	:where(:root[data-justify="choosing"]) .articleBody p {
+		text-align: justify;
+	}
+}
+.articleBody p.pb-line-p {
+	text-align: left;
+	-webkit-hyphens: manual;
+	hyphens: manual;
+	hanging-punctuation: none;
 }
 .articleBody li p {
 	text-align: left;
@@ -242,7 +263,12 @@ article:not(:has(.articleTitle a:empty)) .articleBody p:not(:is(blockquote, li, 
 	font-size: 3.4em;
 	float: left;
 	line-height: 0.82;
-	padding: 0.06em 0.12em 0 0;
+	/* The script fits the capital by its letter (src/justify/drop-caps.js):
+	   --cap-top stands its foot on the second line's baseline, --cap-fit
+	   is where the second line starts. Without the script every letter
+	   takes these. */
+	padding: var(--cap-top, 0.06em) 0 0 0;
+	margin-right: var(--cap-fit, 0.12em);
 	font-weight: 500;
 	/* ::first-letter takes in the punctuation around the letter, so a
 	   paragraph opening on a quotation drops all of "I’ together. Hung,
@@ -267,12 +293,36 @@ article:not(:has(.articleTitle a:empty)) .articleBody p:not(:is(blockquote, li, 
 article:not(:has(.articleTitle a:empty)) .articleBody p:not(:is(blockquote, li, figcaption, figure, table) p):not(:has(> :is(img, picture, video, iframe, svg):first-child)):not(:has(> a:first-child > img)):not(:has(> a:only-child):has(+ p > a:only-child)):not(.articleBody p:not(:is(blockquote, li, figcaption, figure, table) p):not(:has(> :is(img, picture, video, iframe, svg):first-child)):not(:has(> a:first-child > img)) ~ p):not(.articleBody :has(p:not(:is(blockquote, li, figcaption, figure, table) p)) ~ p):not(.articleBody p:not(:is(blockquote, li, figcaption, figure, table) p):not(:has(> :is(img, picture, video, iframe, svg):first-child)):not(:has(> a:first-child > img)) ~ * p):not(.articleBody :has(p:not(:is(blockquote, li, figcaption, figure, table) p)) ~ * p) {
 	--drop-cap: 1;
 }
+/* The rest of the opening word runs in small caps beside the capital, as
+   the printed books open a prayer (the script wraps it). --cap-lead is
+   where it starts from the second line's edge: negative for a capital
+   that is narrower at the top than at the foot (A, L, R), which brings the
+   word in over the leg. The word space after a one-letter opening word is
+   kept in the text and given no width. */
+.articleBody p .pb-runin {
+	font-variant: small-caps;
+	letter-spacing: 0.05em;
+	margin-left: var(--cap-lead, 0em);
+}
+.articleBody p .pb-runin-gap {
+	font-size: 0;
+	white-space: pre;
+}
+.articleBody p.shortOpening .pb-runin {
+	font-variant: inherit;
+	letter-spacing: inherit;
+	margin-left: 0;
+}
+.articleBody p.shortOpening .pb-runin-gap {
+	font-size: inherit;
+}
 .articleBody p.shortOpening::first-letter {
 	font-size: inherit !important;
 	font-weight: 600 !important;
 	line-height: inherit !important;
 	float: none !important;
 	padding: 0 !important;
+	margin: 0 !important;
 }
 
 /* Links are rubrics: red, the printed books' mark for "not the text --
