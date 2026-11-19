@@ -1,14 +1,14 @@
-// What the theme does with script: marks a one-line opening, runs the
-// opening word in beside the capital, and has the engine set the justified
-// lines. Without Article JavaScript the stylesheet alone sets the page:
-// the capital at one fit for every letter, phones ragged right, the Mac
-// justified by the browser.
+// What the theme does with script: gives an article that opens like prose
+// its drop cap, runs the opening word in beside the capital, and has the
+// engine set the justified lines. Without Article JavaScript the stylesheet
+// alone sets the page: no capital, phones ragged right, the Mac justified
+// by the browser.
 var body = document.getElementById("bodyContainer");
 if (body) {
     var root = document.documentElement;
     var controller = null;
 
-    // The paragraph the stylesheet gives the capital to.
+    // The article's first text paragraph, as the stylesheet finds it.
     function opening() {
         var ps = body.getElementsByTagName("p");
         for (var i = 0; i < ps.length; i++) {
@@ -35,49 +35,24 @@ if (body) {
         return { line: line, lines: top === Infinity || !(line > 0) ? 0 : (bottom - top) / line, capital: capital };
     }
 
-    // A one-line opening paragraph keeps its red letter at text size, not
-    // dropped (see .shortOpening in the stylesheet). Measured with the
-    // capital in place and the lines not yet set.
-    function markShort(p) {
-        p.classList.remove("shortOpening");
-        var s = shape(p);
-        if (s.lines > 0 && s.lines < 1.5) p.classList.add("shortOpening");
-    }
-
     // The printed books run the rest of the opening word in small caps
     // beside the initial; after a one-letter word ("A", "I") the run-in
     // takes the next word. Done once: the words go into spans, the text
     // itself does not change. Only when the paragraph opens on a plain
-    // letter in its own text; an opening inside a link, on a quotation
-    // mark, or on a letter with a mark touching it ("I'll") is left as the
-    // feed wrote it. A word keeps its own apostrophes and hyphens ("Don't",
+    // capital A to Z in its own text, with a word to run in: an opening
+    // inside a link, on a quotation mark, a digit or an emoji, or on a
+    // letter with a mark touching it ("I'll") gets no spans and so no
+    // capital. A word keeps its own apostrophes and hyphens ("Don't",
     // "Well-being").
     var WORD = "\\p{L}[\\p{L}\\p{M}'\\u2019\\u2010-]*";
-    var OPENING = new RegExp("^(\\s*)(\\p{Lu})(?:(" + WORD + ")|(\\s+)(" + WORD + "))?(?=$|[^\\p{L}\\p{M}'\\u2019\\u2010-])", "u");
-    // A capital that is a word of its own and has no run-in ("5 things", an
-    // emoji) is followed by a space that would fall at the start of line 1
-    // once the lines are set, and be lost to a copy. It is kept, at no
-    // width, as the space after a one-letter word is.
-    function keepGap(p, node) {
-        var cap = capLength(node.nodeValue), text = node.nodeValue;
-        var space = /^\s+/.exec(text.slice(cap));
-        if (!space || cap === 0) return;
-        var gap = document.createElement("span");
-        gap.className = "pb-runin-gap";
-        gap.textContent = space[0];
-        var rest = document.createTextNode(text.slice(cap + space[0].length));
-        node.nodeValue = text.slice(0, cap);
-        p.insertBefore(gap, node.nextSibling);
-        p.insertBefore(rest, gap.nextSibling);
-    }
-
+    var OPENING = new RegExp("^(\\s*)([A-Z])(?:(" + WORD + ")|(\\s+)(" + WORD + "))?(?=$|[^\\p{L}\\p{M}'\\u2019\\u2010-])", "u");
     function markRunIn(p) {
-        if (p.querySelector(".pb-runin, .pb-runin-gap")) return;
+        if (p.querySelector(".pb-runin")) return;
         var node = p.firstChild;
         if (!node || node.nodeType !== 3) return;
         var text = node.nodeValue;
         var m = OPENING.exec(text);
-        if (!m || (!m[3] && !m[5])) { keepGap(p, node); return; }
+        if (!m || (!m[3] && !m[5])) return;
         var capEnd = m[1].length + m[2].length;
         var oneLetter = !m[3];
         var runStart = oneLetter ? capEnd + m[4].length : capEnd;
@@ -102,16 +77,13 @@ if (body) {
     }
 
     // Where the two lines beside the capital start, for this letter at
-    // this leading (drop-caps.js). A letter the table does not have keeps
-    // the stylesheet's own fit and still stands on the baseline.
+    // this leading (drop-caps.js).
     function fit(p) {
         var letter = p.dataset.cap;
-        if (!letter) return;
         var cs = getComputedStyle(p);
         var narrow = parseFloat(cs.lineHeight) / parseFloat(cs.fontSize) < 1.6;
         var row = (narrow ? FIT_NARROW : FIT_WIDE)[letter];
         p.style.setProperty("--cap-top", (narrow ? TOP_NARROW : TOP_WIDE) + "em");
-        if (!row) { p.style.removeProperty("--cap-fit"); p.style.removeProperty("--cap-lead"); return; }
         p.style.setProperty("--cap-fit", row[0] + "em");
         p.style.setProperty("--cap-lead", (row[1] + ("oneLetter" in p.dataset ? ONE_LETTER_LEAD : 0)).toFixed(3) + "em");
     }
@@ -122,6 +94,20 @@ if (body) {
         while (parts.length > 1 && parts[0].length < 3) parts.splice(0, 2, parts[0] + parts[1]);
         while (parts.length > 1 && parts[parts.length - 1].length < 3) parts.splice(-2, 2, parts[parts.length - 2] + parts[parts.length - 1]);
         return parts;
+    }
+
+    // The capital belongs to an article that opens like prose: a paragraph
+    // that starts on a word (markRunIn) and runs to two lines or more, the
+    // height of the capital. A byline or a one-line link post stays plain
+    // text.
+    // Counted without the capital, so the answer does not depend on the
+    // last one.
+    function mark(p) {
+        p.classList.remove("pb-opening");
+        markRunIn(p);
+        if (!p.dataset.cap || shape(p).lines < 1.5) return;
+        p.classList.add("pb-opening");
+        fit(p);
     }
 
     function release() {
@@ -175,10 +161,8 @@ if (body) {
             var first = opening();
             var capital = false;
             if (first) {
-                markShort(first);
-                markRunIn(first);
-                fit(first);
-                capital = !first.classList.contains("shortOpening") && shape(first).capital;
+                mark(first);
+                capital = first.classList.contains("pb-opening") && shape(first).capital;
             }
             // On a phone the stylesheet sets paragraphs ragged; "choosing" asks
             // it which of them would be justified were the lines set.
@@ -225,7 +209,7 @@ if (body) {
     // the layout there is an error. If the fonts are slow the lines are set
     // without them and set again when they come.
     var early = opening();
-    if (early) { markShort(early); markRunIn(early); fit(early); }
+    if (early) mark(early);
     if (document.fonts && document.fonts.ready) {
         document.fonts.ready.then(function () { setTimeout(function () { if (started) again(); else start(); }, 0); });
         setTimeout(start, 1500);
