@@ -260,51 +260,36 @@ mark {
 	color: inherit;
 }
 
-/* The opening capital drops in red, as each prayer opens on the site. It
-   goes on the first paragraph of the article in document order, however
-   deep the feed wraps it: a paragraph is passed over if a text paragraph,
-   or an element holding one, comes before it at its own level or at any
-   level above. Quotations, lists, captions, tables and paragraphs that
-   open on an image are not text paragraphs, and an article that opens on
-   two "label: link" lines, a link the only element in each (Hacker News,
-   Lobsters, every aggregator feed), takes no capital at all. The predecessor test cannot use :has() (WebKit
-   rejects :has() inside :has()), so an image-only paragraph inside an
-   earlier wrapper still counts as text there. A post with no title (a
-   Mastodon or Bluesky post) is not an article and takes no capital. */
-article:not(:has(.articleTitle a:empty)) .articleBody p:not(:is(blockquote, li, figcaption, figure, table) p):not(:has(> :is(img, picture, video, iframe, svg):first-child)):not(:has(> a:first-child > img)):not(:has(> a:only-child):has(+ p > a:only-child)):not(.articleBody p:not(:is(blockquote, li, figcaption, figure, table) p):not(:has(> :is(img, picture, video, iframe, svg):first-child)):not(:has(> a:first-child > img)) ~ p):not(.articleBody :has(p:not(:is(blockquote, li, figcaption, figure, table) p)) ~ p):not(.articleBody p:not(:is(blockquote, li, figcaption, figure, table) p):not(:has(> :is(img, picture, video, iframe, svg):first-child)):not(:has(> a:first-child > img)) ~ * p):not(.articleBody :has(p:not(:is(blockquote, li, figcaption, figure, table) p)) ~ * p)::first-letter {
+/* The article's first text paragraph, in document order, however deep
+   the feed wraps it: a paragraph is passed over if a text paragraph, or an
+   element holding one, comes before it at its own level or at any level
+   above. Quotations, lists, captions, tables and paragraphs that open on
+   an image are not text paragraphs, and an article that opens on two
+   "label: link" lines, a link the only element in each (Hacker News,
+   Lobsters, every aggregator feed), has none. The predecessor test cannot
+   use :has() (WebKit rejects :has() inside :has()), so an image-only
+   paragraph inside an earlier wrapper still counts as text there. A post
+   with no title (a Mastodon or Bluesky post) is not an article. The
+   template's script reads this mark. */
+article:not(:has(.articleTitle a:empty)) .articleBody p:not(:is(blockquote, li, figcaption, figure, table) p):not(:has(> :is(img, picture, video, iframe, svg):first-child)):not(:has(> a:first-child > img)):not(:has(> a:only-child):has(+ p > a:only-child)):not(.articleBody p:not(:is(blockquote, li, figcaption, figure, table) p):not(:has(> :is(img, picture, video, iframe, svg):first-child)):not(:has(> a:first-child > img)) ~ p):not(.articleBody :has(p:not(:is(blockquote, li, figcaption, figure, table) p)) ~ p):not(.articleBody p:not(:is(blockquote, li, figcaption, figure, table) p):not(:has(> :is(img, picture, video, iframe, svg):first-child)):not(:has(> a:first-child > img)) ~ * p):not(.articleBody :has(p:not(:is(blockquote, li, figcaption, figure, table) p)) ~ * p) {
+	--drop-cap: 1;
+}
+/* The opening capital drops in red, as each prayer opens on the site. The
+   script gives it (.pb-opening) to a first paragraph that opens like
+   prose: on a word, and two lines or longer. A byline or a one-line link
+   post opens as plain text, and so does every article with Article
+   JavaScript off. */
+.articleBody p.pb-opening::first-letter {
 	color: var(--rubric);
 	font-size: 3.4em;
 	float: left;
 	line-height: 0.82;
-	/* The script fits the capital by its letter (src/justify/drop-caps.js):
-	   --cap-top stands its foot on the second line's baseline, --cap-fit
-	   is where the second line starts. Without the script every letter
-	   takes these. */
+	/* Fitted by its letter (src/justify/drop-caps.js): --cap-top stands
+	   the capital's foot on the second line's baseline, --cap-fit is where
+	   the second line starts. */
 	padding: var(--cap-top, 0.06em) 0 0 0;
 	margin-right: var(--cap-fit, 0.12em);
 	font-weight: 500;
-	/* ::first-letter takes in the punctuation around the letter, so a
-	   paragraph opening on a quotation drops all of "I’ together. Hung,
-	   the quote would sit left of the column and the float would keep its
-	   unhung width, leaving a gap before the rest of the word. */
-	hanging-punctuation: none;
-}
-/* When the paragraph that carries the capital is one short line ("OpenAI,
-   today:"), whatever follows would start beside the capital's foot: the
-   next paragraph pushed in, a quotation's margin rule under the letter, a
-   hairline through it. The element straight after that paragraph starts
-   below the capital instead, at the ordinary paragraph distance. Only that
-   one element is cleared, so pictures a feed floats are left alone. */
-article:not(:has(.articleTitle a:empty)) .articleBody p:not(:is(blockquote, li, figcaption, figure, table) p):not(:has(> :is(img, picture, video, iframe, svg):first-child)):not(:has(> a:first-child > img)):not(:has(> a:only-child):has(+ p > a:only-child)):not(.articleBody p:not(:is(blockquote, li, figcaption, figure, table) p):not(:has(> :is(img, picture, video, iframe, svg):first-child)):not(:has(> a:first-child > img)) ~ p):not(.articleBody :has(p:not(:is(blockquote, li, figcaption, figure, table) p)) ~ p):not(.articleBody p:not(:is(blockquote, li, figcaption, figure, table) p):not(:has(> :is(img, picture, video, iframe, svg):first-child)):not(:has(> a:first-child > img)) ~ * p):not(.articleBody :has(p:not(:is(blockquote, li, figcaption, figure, table) p)) ~ * p) + * {
-	clear: left;
-}
-/* The template's script reads this to find the paragraph that carries the
-   capital, and marks it .shortOpening when its text is a single line: a
-   capital two lines tall has nothing to sit beside there, so the letter
-   stays at text size, still red and bold. With Article JavaScript off the capital stays and
-   the rule above keeps what follows clear of it. */
-article:not(:has(.articleTitle a:empty)) .articleBody p:not(:is(blockquote, li, figcaption, figure, table) p):not(:has(> :is(img, picture, video, iframe, svg):first-child)):not(:has(> a:first-child > img)):not(:has(> a:only-child):has(+ p > a:only-child)):not(.articleBody p:not(:is(blockquote, li, figcaption, figure, table) p):not(:has(> :is(img, picture, video, iframe, svg):first-child)):not(:has(> a:first-child > img)) ~ p):not(.articleBody :has(p:not(:is(blockquote, li, figcaption, figure, table) p)) ~ p):not(.articleBody p:not(:is(blockquote, li, figcaption, figure, table) p):not(:has(> :is(img, picture, video, iframe, svg):first-child)):not(:has(> a:first-child > img)) ~ * p):not(.articleBody :has(p:not(:is(blockquote, li, figcaption, figure, table) p)) ~ * p) {
-	--drop-cap: 1;
 }
 /* The rest of the opening word runs in small caps beside the capital, as
    the printed books open a prayer (the script wraps it). --cap-lead is
@@ -312,30 +297,14 @@ article:not(:has(.articleTitle a:empty)) .articleBody p:not(:is(blockquote, li, 
    that is narrower at the top than at the foot (A, L, R), which brings the
    word in over the leg. The word space after a one-letter opening word is
    kept in the text and given no width. */
-.articleBody p .pb-runin {
+.articleBody p.pb-opening .pb-runin {
 	font-variant: small-caps;
 	letter-spacing: 0.05em;
 	margin-left: var(--cap-lead, 0em);
 }
-.articleBody p .pb-runin-gap {
+.articleBody p.pb-opening .pb-runin-gap {
 	font-size: 0;
 	white-space: pre;
-}
-.articleBody p.shortOpening .pb-runin {
-	font-variant: inherit;
-	letter-spacing: inherit;
-	margin-left: 0;
-}
-.articleBody p.shortOpening .pb-runin-gap {
-	font-size: inherit;
-}
-.articleBody p.shortOpening::first-letter {
-	font-size: inherit !important;
-	font-weight: 600 !important;
-	line-height: inherit !important;
-	float: none !important;
-	padding: 0 !important;
-	margin: 0 !important;
 }
 
 /* Links are rubrics: red, the printed books' mark for "not the text --
