@@ -30,6 +30,13 @@ const HYPHEN_COST = 60;
 const DOUBLE_HYPHEN = 4000;                    // two hyphenated lines in a row
 const MAX_HYPHEN_RUN = 2;
 const LOOSEST = 12;                            // ratio past which a line is refused
+// A line planned beside the drop cap that starts more than this many px left
+// of its planned start has fallen below the capital. WebKit reports where such
+// a line starts to within a few pixels only, so a smaller gap is not a fall.
+const CAP_DRIFT_PX = 2;
+// How many px short of the room beside the capital a fallen line is refitted,
+// so that it does not fall below the capital again.
+const CAP_REFIT_MARGIN_PX = 3;
 const CLASS = "justified";
 // The class of a set line's spans, for the caller to find them by.
 export const LINE = CLASS;
@@ -567,8 +574,8 @@ export function justify(paragraphs, options = {}) {
                 // A line planned beside the capital that came out a hair too
                 // wide stands below it, at the margin. Make it narrower than
                 // its room by a clear margin, and keep that margin after.
-                if (line.beside && start < left + line.beside.start - 2) {
-                    line.margin = 3;
+                if (line.beside && start < left + line.beside.start - CAP_DRIFT_PX) {
+                    line.margin = CAP_REFIT_MARGIN_PX;
                     fixes.push({ line, word: line.word + (line.beside.room - line.margin - (end - start)) / line.glue });
                     continue;
                 }
